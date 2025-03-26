@@ -1,100 +1,72 @@
-import React, { useEffect, useState } from 'react'
-import { useAuth } from '../../../context/AuthContext';
-import { useRoom } from '../../../context/RoomsContext';
-import { getUserById } from '../../../services/userServices';
-import CircularMap from './CircularMap';
+import React, { useState } from 'react';
 
-export default function BitcoinConquestPage() {
-    const { user, setUser } = useAuth();
-    const { contextRoom, setcontextRoom } = useRoom();
-    const [usersInGame, setUsersInGame] = useState([]);
-    const [date, setDate] = useState(new Date());
-    const [gameStatus, setGameStatus] = useState('waiting'); // waiting, playing, finished
+/**
+ * RiskBoard הוא קומפוננט React אחד שמכיל את כל הוויזואליות הבסיסית של לוח משחק דמוי ריסק.
+ * בקוד זה כל "טריטוריה" מיוצגת באמצעות <path> (בתוך SVG), וניתן להרחיב עם כל
+ * לוגיקה נוספת - כמו הקצאת חיילים, צביעת טריטוריות לפי שחקן, וכדומה.
+ */
+function RiskBoard() {
+  // ניצור state שמייצג איזו טריטוריה "מסומנת" כרגע, לדוגמה
+  const [selectedTerritory, setSelectedTerritory] = useState(null);
 
-    // עדכון השעה בכל שנייה
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setDate(new Date());
-        }, 1000);        
-        return () => clearInterval(timer);
-    }, []);    
-    
-    // טעינת המשתמשים בחדר
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const tempUsers = [];
-                
-                for (let i = 0; i < contextRoom.users.length; i++) {
-                    const userResponse = await getUserById(contextRoom.users[i]);
-                    
-                    if (userResponse && userResponse.data) {
-                        tempUsers.push(userResponse.data);
-                    }
-                }
-                
-                setUsersInGame(tempUsers);
-                
-                // התחלת המשחק אם יש לפחות 2 שחקנים
-                if (tempUsers.length >= 2 && gameStatus === 'waiting') {
-                    setGameStatus('playing');
-                }
-            } catch (error) {
-                console.error("שגיאה בטעינת המשתמשים:", error);
-            }
-        };
-        
-        if (contextRoom && contextRoom.users && contextRoom.users.length > 0) {
-            fetchUsers();
-            console.log(usersInGame)
-            
-        }
-    }, [contextRoom, gameStatus]);
+  // פונקציה לטיפול בלחיצה על טריטוריה
+  const handleTerritoryClick = (territoryName) => {
+    setSelectedTerritory(territoryName);
+  };
 
-    // כל 3 שניות, עדכון נתוני המשחק מהשרת (זה סימולציה, בפועל תשתמש ב-WebSocket)
-    useEffect(() => {
-        if (gameStatus !== 'playing') return;
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <h2>דוגמה ללוח בסגנון "ריסק" בקומפוננטת React יחידה</h2>
+      <p>טריטוריה נבחרת: {selectedTerritory || 'עדיין לא נבחרה'}</p>
 
-        const gameUpdateInterval = setInterval(() => {
-            // כאן תבצע עדכון מהשרת
-            // לדוגמה:
-            // fetchGameState(contextRoom._id);
-        }, 3000);
-        
-        return () => clearInterval(gameUpdateInterval);
-    }, [gameStatus, contextRoom]);
+      {/* ה-SVG יכול להכיל צורות (Paths / Polygons / וכו') המייצגות אזורים שונים במפה */}
+      <svg
+        viewBox="0 0 800 500"
+        style={{
+          width: '80%',
+          height: 'auto',
+          border: '1px solid black',
+          cursor: 'pointer'
+        }}
+      >
+        {/* דוגמה ל"יבשות" או "טריטוריות" - כאן צריך לעדכן את ה-d של כל path בהתאם למפתך */}
+        <path
+          d="M100,100 L200,100 L200,200 L100,200 Z" // ריבוע פשוט
+          fill="#ccc"
+          stroke="black"
+          strokeWidth="2"
+          onClick={() => handleTerritoryClick('North Territory')}
+        />
+        <path
+          d="M210,100 L310,100 L310,200 L210,200 Z" // ריבוע צמוד
+          fill="#aaf"
+          stroke="black"
+          strokeWidth="2"
+          onClick={() => handleTerritoryClick('East Territory')}
+        />
+        <path
+          d="M100,210 L200,210 L200,310 L100,310 Z" // ריבוע צמוד
+          fill="#faa"
+          stroke="black"
+          strokeWidth="2"
+          onClick={() => handleTerritoryClick('South Territory')}
+        />
+        <path
+          d="M210,210 L310,210 L310,310 L210,310 Z" // ריבוע צמוד
+          fill="#afa"
+          stroke="black"
+          strokeWidth="2"
+          onClick={() => handleTerritoryClick('West Territory')}
+        />
 
-    const handleScoreUpdate = async () => {
-        console.log(111);
-        
-    }
+        {/* אפשר כמובן להוסיף עוד territories כרצונך */}
+      </svg>
 
-    return (
-        <div className="bitcoin-conquest-container">
-            <h2>Bitcoin Conquest Game</h2>
-            <div className="game-status">
-                <div>מצב משחק: {gameStatus === 'waiting' ? 'ממתין לשחקנים' : gameStatus === 'playing' ? 'משחק פעיל' : 'המשחק הסתיים'}</div>
-                <div>זמן: {date.toLocaleTimeString()}</div>
-                <div>שחקנים: {usersInGame.length}</div>
-            </div>
-            
-            {/* רינדור המפה רק כאשר המשחק פעיל ויש שחקנים */}
-            {gameStatus === 'playing' && usersInGame.length > 0 && (
-                <CircularMap 
-                    usersInGame={usersInGame} 
-                    currentUserId={user._id}
-                    onScoreUpdate={handleScoreUpdate} 
-                />
-            )}
-            
-            {/* המתנה לשחקנים אם המשחק עדיין לא התחיל */}
-            {gameStatus === 'waiting' && (
-                <div className="waiting-screen">
-                    <h3>ממתין לשחקנים נוספים...</h3>
-                    <p>מספר שחקנים נדרש: לפחות 2</p>
-                    <p>שחקנים כרגע: {usersInGame.length}</p>
-                </div>
-            )}
-        </div>
-    )
+      <p style={{ fontStyle: 'italic', marginTop: '1rem' }}>
+        זו רק המחשה גנרית. כדי לקבל מראה "ריסק" אמיתי, צריך להשתמש בגרפיקה מפורטת או תמונה ברישיון מתאים.
+      </p>
+    </div>
+  );
 }
+
+export default RiskBoard;
