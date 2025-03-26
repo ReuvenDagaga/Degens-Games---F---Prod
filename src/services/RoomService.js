@@ -35,11 +35,12 @@ export const getAllRooms = async (page = 1, limit = 10, filters = {}) => {
   }
 };
 
-export const joinRoomOrCreate = async (userId, gameType) => {
+export const joinRoomOrCreate = async (userId, gameType, gamePrice) => {
   try {
     const response = await axios.post(`${API_URL}/rooms`, {
       userId,
       gameType,
+      gamePrice
     });
     return response.data;
   } catch (error) {

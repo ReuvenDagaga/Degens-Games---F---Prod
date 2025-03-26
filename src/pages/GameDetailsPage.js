@@ -55,7 +55,7 @@ const GameDetailsPage = () => {
       );
       setUser(updatedUser);
       if (updatedUser?.status === "playing") {
-        const joinedRoom = await joinRoomOrCreate(user._id, gameSlug);
+        const joinedRoom = await joinRoomOrCreate(user._id, gameSlug, room.entryFeeUSDT);
         if (joinedRoom?.data) {
           setcontextRoom(joinedRoom.data);
           if (joinedRoom.data.users && joinedRoom.data.users.length >= 2) {
