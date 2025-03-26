@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { io } from "socket.io-client";
+
+const socket = io("https://nb5wb7tn-3456.euw.devtunnels.ms");
 
 // Create the context with default values and additional balance-related functions
 const AuthContext = createContext({
@@ -124,19 +127,19 @@ export const AuthProvider = ({ children }) => {
 
   const updateUserBalance = async (newBalance) => {
     if (!user) return;
-    
+  
     const updatedUser = {
       ...user,
       ePvpBalance: newBalance
     };
+  
     setUser(updatedUser);
-    
     localStorage.setItem('user', JSON.stringify(updatedUser));
-
-    const response = await axios.put(`${BASE_URL}/api/${user._id}`, updatedUser);
-    console.log(response);
-    
-    
+  
+    socket.emit("updateBalance", {
+      userId: user._id,
+      ePvpBalance: newBalance,
+    });
   };
 
   const login = async (walletAddress, signature, message) => {
