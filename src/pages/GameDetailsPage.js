@@ -59,6 +59,7 @@ const GameDetailsPage = () => {
         if (joinedRoom?.data) {
           setcontextRoom(joinedRoom.data);
           if (joinedRoom.data.users && joinedRoom.data.users.length >= 2) {
+            setUser({ ...user, status: "playing", usdtBalance: user.usdtBalance - room.entryFeeUSDT });
             navigate(`/play/${gameSlug}`);
           }
         }
