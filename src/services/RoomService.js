@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3456/api";
+const API_URL = "https://nb5wb7tn-3456.euw.devtunnels.ms/api";
 
 export const getRoomById = async (roomId) => {
   try {

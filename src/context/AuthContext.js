@@ -19,7 +19,7 @@ const AuthContext = createContext({
 // הוספנו את useAuth שהיה חסר - זה ה-hook שמשתמש בקונטקסט
 export const useAuth = () => useContext(AuthContext);
 
-const BASE_URL = "http://localhost:3456";
+const BASE_URL = "https://nb5wb7tn-3456.euw.devtunnels.ms";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);

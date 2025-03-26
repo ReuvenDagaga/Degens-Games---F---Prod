@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3456";
+const BASE_URL = "https://nb5wb7tn-3456.euw.devtunnels.ms";
 
 export const getUserById = async (userId) => {
     const response = await axios.get(`${BASE_URL}/api/getUserById/${userId}`);

@@ -4,7 +4,7 @@ import { io } from "socket.io-client";
 import { useAuth } from "../../../context/AuthContext";
 import { useRoom } from "../../../context/RoomsContext";
 
-const socket = io("http://localhost:3456");
+const socket = io("https://nb5wb7tn-3456.euw.devtunnels.ms");
 
 // Helper to get up to 2 initials from username
 function getInitials(username = "") {
