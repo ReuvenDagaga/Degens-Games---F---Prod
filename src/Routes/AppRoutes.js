@@ -18,7 +18,7 @@ export const AppRoutes = () => {
       <Route path="/profile" element={<UserProfile />} />
       <Route path="/staking" element={<StakingDashboard />} />
       <Route path="/leaderboard" element={<LeaderboardPage />} />
-      <Route path="/gameDetails/:gameSlug" element={<GameDetailsPage />} />
+      <Route path="/gameDetails/:gameSlug/:entryFee" element={<GameDetailsPage />} />
       <Route path="/play/Chess" element={<ChessPage />}/>
       <Route path="/play/2048" element={<Game2048Page />}/>
       <Route path="/Statistics" element={<TokenomicsDashboard />} />

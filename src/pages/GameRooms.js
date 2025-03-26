@@ -79,7 +79,7 @@ const GameRooms = () => {
   const handleRoomClick = (room) => {
     // Create URL-friendly game name (lowercase, spaces to hyphens)
     const gameSlug = room.name
-    navigate(`/gamedetails/${gameSlug}${room.entryFeeUSDT}`, { state: { roomData: room } });
+    navigate(`/gamedetails/${gameSlug}/${room.entryFeeUSDT}`, { state: { roomData: room } });
   };
   
   return (

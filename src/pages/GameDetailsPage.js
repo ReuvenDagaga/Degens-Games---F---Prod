@@ -50,7 +50,7 @@ const GameDetailsPage = () => {
       setShowConfirmModal(false);
       const updatedUser = await updateUser(
         user._id,
-        { status: "playing", usdtBalance: -room.entryFeeUSDT },
+        { status: "playing" },
         { new: true }
       );
       setUser(updatedUser);
