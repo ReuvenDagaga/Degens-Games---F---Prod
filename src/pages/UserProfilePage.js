@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Trophy, X, Copy, Users, Wallet, BarChart3, CreditCard, ExternalLink, ChevronRight, DollarSign } from 'lucide-react';
+import Loading from '../components/Loading';
 
 const UserProfile = () => {
   const { user } = useAuth();
   const [showCopiedMessage, setShowCopiedMessage] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
 
-  // Function to copy referral code
   const copyReferralCode = () => {
     if (user?.refferalCode) {
       navigator.clipboard.writeText(user.refferalCode);
@@ -16,58 +16,42 @@ const UserProfile = () => {
     }
   };
 
-  // Helper function to truncate wallet address
   const truncateAddress = (address) => {
     if (!address) return '';
     return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
   };
 
-  // Helper function to format large numbers nicely
   const formatBalance = (balance) => {
     if (balance === undefined || balance === null) return '0';
     
-    // Convert to number if it's a string
     const numBalance = typeof balance === 'string' ? parseFloat(balance) : balance;
     
-    // For numbers larger than 1 million
     if (numBalance >= 1000000) {
       if (numBalance >= 1000000000) {
-        // For billions
         return `${(numBalance / 1000000000).toFixed(2)}B`;
       }
-      // For millions
       return `${(numBalance / 1000000).toFixed(2)}M`;
     }
     
-    // For large numbers but less than a million
     if (numBalance >= 10000) {
       return numBalance.toLocaleString();
     }
     
-    // For small numbers, show up to 2 decimal places
     return numBalance.toFixed(2);
   };
 
   if (!user) {
     return (
-      <div className="flex justify-center items-center h-full py-20">
-        <div className="text-xl text-gray-300">Loading user profile...</div>
-      </div>
+      <Loading/>
     );
   }
-
-  // Sample USDT balance - in real scenario this would come from user data
-  const usdtBalance = 325.75;
   
   return (
     <div className="bg-gray-900 text-gray-200 w-full">
-      {/* Profile Container - Removed the min-h-screen that was causing layout issues */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12">
         <div className="bg-gray-900 rounded-lg shadow-xl overflow-hidden">
-          {/* Profile Header */}
           <div className="p-6 sm:p-8 flex flex-col md:flex-row gap-6">
             <div className="flex flex-col items-center md:items-start">
-              {/* Profile Avatar */}
               <div className="relative">
                 <div className="w-24 h-24 rounded-full bg-gradient-to-r from-red-700 to-red-500 flex items-center justify-center text-xl font-bold text-white ring-4 ring-gray-800">
                   {user.username?.substring(0, 2).toUpperCase() || user.walletAddress?.substring(0, 2).toUpperCase() || "?"}
@@ -77,9 +61,7 @@ const UserProfile = () => {
                 )}
               </div>
               
-              {/* User Balances */}
               <div className="mt-6 flex flex-col items-center gap-2 w-full">
-                {/* USDT Balance */}
                 <div className="flex items-center bg-gray-750 border border-gray-700 rounded-lg px-3 py-2 w-full justify-between">
                   <div className="flex items-center">
                     <img 
@@ -89,12 +71,11 @@ const UserProfile = () => {
                     />
                     <span className="text-sm text-gray-400">USDT</span>
                   </div>
-                  <span className={`font-medium ${usdtBalance >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                    ${usdtBalance.toFixed(2)}
+                  <span className={`font-medium ${user.usdtBalance >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    ${user.usdtBalance.toFixed(2)}
                   </span>
                 </div>
                 
-                {/* ePVP Balance */}
                 <div className="flex items-center bg-gray-750 border border-gray-700 rounded-lg px-3 py-2 w-full justify-between">
                   <div className="flex items-center">
                     <img 
@@ -104,14 +85,13 @@ const UserProfile = () => {
                     />
                     <span className="text-sm text-gray-400">ePVP</span>
                   </div>
-                  <span className="font-medium text-yellow-400 truncate max-w-[150px]" title={user.balance}>
-                    {formatBalance(user.balance)}
+                  <span className="font-medium text-yellow-400 truncate max-w-[150px]" title={user.ePvpBalance}>
+                    {formatBalance(user.ePvpBalance)}
                   </span>
                 </div>
               </div>
             </div>
             
-            {/* User Details */}
             <div className="flex-1 md:ml-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4">
                 <h1 className="text-2xl font-bold text-gray-100">{user.username || "User"}</h1>
@@ -161,7 +141,7 @@ const UserProfile = () => {
                   <div className="ml-2">
                     <div className="text-xs text-gray-400">Profit</div>
                     <div className={`font-medium ${user.profit >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {user.profit > 0 ? '+' : ''}{user.profit} ePVP
+                      {user.profit} USDT
                     </div>
                   </div>
                 </div>
@@ -169,7 +149,6 @@ const UserProfile = () => {
             </div>
           </div>
           
-          {/* Tabs Navigation */}
           <div className="border-t border-gray-700">
             <nav className="flex">
               <button
@@ -205,19 +184,16 @@ const UserProfile = () => {
             </nav>
           </div>
           
-          {/* Tab Content */}
           <div className="p-6">
             {activeTab === 'overview' && (
               <div>
-                {/* Quick Stats */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-                  {/* USDT Balance Card */}
                   <div className="bg-gray-750 border border-gray-700 rounded-lg p-5 shadow-md">
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="text-sm font-medium text-gray-400">USDT Balance</p>
-                        <h3 className={`text-2xl font-semibold mt-1 ${usdtBalance >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                          ${usdtBalance.toFixed(2)}
+                        <h3 className={`text-2xl font-semibold mt-1 ${user.usdtBalance >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                          ${user.usdtBalance.toFixed(2)}
                         </h3>
                       </div>
                       <div className="p-2 bg-gray-700 rounded-lg">
@@ -226,13 +202,12 @@ const UserProfile = () => {
                     </div>
                   </div>
                   
-                  {/* ePVP Balance Card */}
                   <div className="bg-gray-750 border border-gray-700 rounded-lg p-5 shadow-md">
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="text-sm font-medium text-gray-400">ePVP Balance</p>
-                        <h3 className="text-2xl font-semibold mt-1 text-yellow-400 truncate max-w-[180px]" title={user.balance}>
-                          {formatBalance(user.balance)}
+                        <h3 className="text-2xl font-semibold mt-1 text-yellow-400 truncate max-w-[180px]" title={user.ePvpBalance}>
+                          {formatBalance(user.ePvpBalance)}
                         </h3>
                       </div>
                       <div className="p-2 bg-gray-700 rounded-lg">
@@ -262,7 +237,7 @@ const UserProfile = () => {
                       <div>
                         <p className="text-sm font-medium text-gray-400">Total Profit</p>
                         <h3 className={`text-2xl font-semibold mt-1 truncate max-w-[180px] ${user.profit >= 0 ? 'text-green-400' : 'text-red-400'}`} title={`${user.profit} ePVP`}>
-                          {user.profit > 0 ? '+' : ''}{formatBalance(user.profit)} ePVP
+                          {user.profit > 0 ? '+' : ''}{formatBalance(user.profit)} USDT
                         </h3>
                       </div>
                       <div className="p-2 bg-gray-700 rounded-lg">
@@ -272,7 +247,6 @@ const UserProfile = () => {
                   </div>
                 </div>
                 
-                {/* Referral Box */}
                 <div className="bg-gray-750 border border-gray-700 rounded-lg p-5 shadow-md mb-8">
                   <h3 className="text-lg font-medium text-gray-200 mb-3">Referral Program</h3>
                   <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
@@ -309,7 +283,6 @@ const UserProfile = () => {
                   </div>
                 </div>
                 
-                {/* Action Buttons */}
                 <div className="flex flex-wrap gap-4">
                   <button className="flex items-center bg-red-600 hover:bg-red-700 text-white rounded-md px-4 py-2.5 transition-colors">
                     <CreditCard size={18} className="mr-2" />
@@ -318,10 +291,6 @@ const UserProfile = () => {
                   <button className="flex items-center bg-gray-700 border border-gray-600 text-gray-200 hover:bg-gray-600 rounded-md px-4 py-2.5 transition-colors">
                     <Wallet size={18} className="mr-2" />
                     Withdraw
-                  </button>
-                  <button className="flex items-center bg-gray-700 border border-gray-600 text-gray-200 hover:bg-gray-600 rounded-md px-4 py-2.5 transition-colors">
-                    <ExternalLink size={18} className="mr-2" />
-                    View on Blockchain
                   </button>
                 </div>
               </div>
