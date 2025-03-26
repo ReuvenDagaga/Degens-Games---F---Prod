@@ -2,7 +2,7 @@ import { Canvas } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 
 function Map3D() {
-  const { nodes } = useGLTF('/models/cryptoMap.glb');
+  const { nodes } = useGLTF('./Map.glb');
 
   return (
     <Canvas camera={{ position: [0, 0, 5] }}>
