@@ -160,13 +160,13 @@ const Game2048Page = () => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
-
-  return (
+if (!user || contextRoom.user.length !== 2) return null;
+  return (    
     <div className="min-h-screen bg-gray-950 text-white p-6 flex flex-col items-center justify-center">
-      <h1 className="text-3xl font-bold mb-6">2048 Multiplayer</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div className="flex flex-col items-center">
-          <h2 className="text-lg mb-2 font-semibold">{user?.username || "You"}</h2>
+    <h1 className="text-3xl font-bold mb-6">2048 Multiplayer</h1>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+    <div className="flex flex-col items-center">
+    <h2 className="text-lg mb-2 font-semibold">{user?.username || "You"}</h2>
           <Grid grid={grid} />
           <p className="mt-2 text-green-400 font-bold">Score: {score}</p>
         </div>
@@ -175,14 +175,14 @@ const Game2048Page = () => {
           <Grid grid={opponentGrid} />
           <p className="mt-2 text-yellow-400 font-bold">Score: {opponentScore}</p>
         </div>
-      </div>
-
-      {winner && (
-        <div className="mt-6 text-2xl font-bold text-cyan-400">
-          {winner === user._id ? "🎉 You won!" : "😢 You lost!"}
         </div>
-      )}
-    </div>
+        
+        {winner && (
+          <div className="mt-6 text-2xl font-bold text-cyan-400">
+          {winner === user._id ? "🎉 You won!" : "😢 You lost!"}
+          </div>
+        )}
+        </div>
   );
 };
 
