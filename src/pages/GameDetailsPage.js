@@ -12,7 +12,7 @@ import { updateUser } from "../services/userServices";
 const GameDetailsPage = () => {
   const { user, setUser } = useAuth() || {};
   const { contextRoom, setcontextRoom } = useRoom() || {};
-  const { gameSlug } = useParams();
+  const { gameSlug, entryFee } = useParams();
   const navigate = useNavigate();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -22,9 +22,9 @@ const GameDetailsPage = () => {
       .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" "),
-    type: "Bitcoin Conquest",
+    type: `${gameSlug}`,
     currency: "USDT",
-    entryFeeUSDT: 20,
+    entryFeeUSDT: `${entryFee}`,
     playersPerMatch: 2,
     currentlyOnline: 42,
     image: `/${gameSlug}.png`,
