@@ -11,7 +11,7 @@ const recentGames = [
     loserLossUSDT: 45,
     winnerProfitEPVP: 100,
     loserLossEPVP: 10,
-    gameType: "Poker",
+    gameType: "2048",
     currency: "USDT", // Main currency of the game
     endTime: "08.03.2025 14:32"
   },
@@ -23,7 +23,7 @@ const recentGames = [
     loserLossUSDT: 30,
     winnerProfitEPVP: 100,
     loserLossEPVP: 10,
-    gameType: "Blackjack",
+    gameType: "Chess",
     currency: "USDT",
     endTime: "08.03.2025 14:18"
   },
@@ -35,7 +35,7 @@ const recentGames = [
     loserLossUSDT: null,
     winnerProfitEPVP: 1200,
     loserLossEPVP: 1200,
-    gameType: "Roulette",
+    gameType: "Chess",
     currency: "ePVP", // This game was played with ePVP
     endTime: "08.03.2025 13:55"
   },
@@ -47,7 +47,7 @@ const recentGames = [
     loserLossUSDT: 78,
     winnerProfitEPVP: 100,
     loserLossEPVP: 10,
-    gameType: "Poker",
+    gameType: "Chess",
     currency: "USDT",
     endTime: "08.03.2025 13:42"
   },
@@ -59,7 +59,7 @@ const recentGames = [
     loserLossUSDT: null,
     winnerProfitEPVP: 520,
     loserLossEPVP: 520,
-    gameType: "Blackjack",
+    gameType: "Bitcoin",
     currency: "ePVP",
     endTime: "08.03.2025 13:30"
   }
@@ -199,7 +199,6 @@ const RecentGames = () => {
                         </div>
                       )}
                       
-                      {/* Always show ePVP rewards/losses */}
                       <div className="text-sm text-yellow-400 flex items-center">
                         <img src="/favi.png" alt="ePVP" className="w-3 h-3 mr-0.5" />
                         {game.currency === 'USDT' ? '+' : '-'}{game.loserLossEPVP} ePVP

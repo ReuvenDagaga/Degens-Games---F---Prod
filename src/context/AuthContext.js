@@ -107,50 +107,36 @@ export const AuthProvider = ({ children }) => {
     return () => clearInterval(intervalId);
   }, [user, lastBalanceUpdate]);
 
-  // פונקציה לחישוב הAPY הכולל על סמך הגורמים השונים
   const getCurrentAPY = () => {
     if (!user) return 0;
     
-    let totalAPY = 0;
-    
-    // APY בסיסי עבור היותך משתמש
-    totalAPY += 30;
-    
-    // APY על היותך מחובר כרגע
-    totalAPY += 20;
-    
-    // APY מהפניות משתמשים (1% לכל משתמש עד 50%)
+    let totalAPY = 0;    
+    totalAPY += 30;    
+    totalAPY += 20;    
     const referralCount = user.refferedUsers?.length || 0;
     totalAPY += Math.min(referralCount, 50);
-    
-    // APY עבור יתרת USDT מעל 10
-    // בדוגמה אמיתית היינו מושכים את יתרת ה-USDT מהמשתמש
-    // כרגע נניח שיש לו מספיק
-    const hasEnoughUSDT = true; // במימוש אמיתי בדוק את יתרת ה-USDT
+    const hasEnoughUSDT = true;
     if (hasEnoughUSDT) {
       totalAPY += 20;
-    }
-    
+    } 
     return totalAPY;
   };
 
-  // פונקציה לעדכון הבלאנס של המשתמש
-  const updateUserBalance = (newBalance) => {
+  const updateUserBalance = async (newBalance) => {
     if (!user) return;
     
-    // עדכון ה-state של המשתמש
     const updatedUser = {
       ...user,
       ePvpBalance: newBalance
     };
-    
     setUser(updatedUser);
     
-    // שמירה ב-localStorage
     localStorage.setItem('user', JSON.stringify(updatedUser));
+
+    const response = await axios.put(`${BASE_URL}/api/${user._id}`, updatedUser);
+    console.log(response);
     
-    // במימוש אמיתי היינו גם שולחים עדכון לשרת מדי פעם
-    // (לא כל רבע שנייה, אלא אולי כל כמה דקות או בהתנתקות)
+    
   };
 
   const login = async (walletAddress, signature, message) => {

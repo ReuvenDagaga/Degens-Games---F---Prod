@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { Users, Clock, Wallet, PlusCircle, TrendingUp, Shield, Info } from 'lucide-react';
 
 const StakingDashboard = () => {
-  const { user, getCurrentAPY } = useAuth();
+  const { user, getCurrentAPY, setUser } = useAuth();
   const [displayBalance, setDisplayBalance] = useState(user?.balance || 0);
   
   // עדכון הבלאנס המוצג כל רבע שנייה לאנימציה חלקה
