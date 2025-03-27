@@ -39,7 +39,6 @@ const WeeklyLeaderboard = () => {
     return `${days}d ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
   
-  // במקום API אמיתי, ייצר נתוני דוגמה
   const generateMockData = () => {
     const mockUsers = [];
     const names = ["Alex", "Jordan", "Taylor", "Morgan", "Casey", "Riley", "Avery", "Quinn", "Skyler", "Dakota"];
@@ -73,7 +72,6 @@ const WeeklyLeaderboard = () => {
   
   // טעינת נתוני הליידרבורד
   useEffect(() => {
-    // בהמשך כאן היינו קוראים ל-API אמיתי
     setTimeout(() => {
       setLeaderboardData(generateMockData());
       setTimeRemaining(calculateTimeRemaining());

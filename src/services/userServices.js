@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://nb5wb7tn-3456.euw.devtunnels.ms";
+const BASE_URL = "https://degensgamesprod.onrender.com";
 
 export const getUserById = async (userId) => {
     const response = await axios.get(`${BASE_URL}/api/getUserById/${userId}`);

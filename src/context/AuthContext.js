@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { io } from "socket.io-client";
 
-const socket = io("https://nb5wb7tn-3456.euw.devtunnels.ms");
+const socket = io("https://degensgamesprod.onrender.com");
 
 // Create the context with default values and additional balance-related functions
 const AuthContext = createContext({
@@ -22,7 +22,7 @@ const AuthContext = createContext({
 // הוספנו את useAuth שהיה חסר - זה ה-hook שמשתמש בקונטקסט
 export const useAuth = () => useContext(AuthContext);
 
-const BASE_URL = "https://nb5wb7tn-3456.euw.devtunnels.ms";
+const BASE_URL = "https://degensgamesprod.onrender.com";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
