@@ -1,109 +1,110 @@
 import React, { useCallback, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { useTournament } from "../context/TournamentContext"; // קונטקסט לטורנירים
-import { joinTournamentOrCreate } from "../services/TournamentService"; // שירות מותאם
+import GameHeaderSection from "../components/gameDetailes/GameHeaderSection";
+import GameInfoSection from "../components/gameDetailes/GameInfoSection";
+import GameSidebarSection from "../components/gameDetailes/GameSidebarSection";
+import GameActionsSection from "../components/gameDetailes/GameActionsSection";
+import { joinRoomOrCreate } from "../services/RoomService";
+import { useRoom } from "../context/RoomsContext";
 import { updateUser } from "../services/userServices";
-
-import TournamentHeaderSection from "../components/TournamentDetails/TournamentHeaderSection";
-import TournamentInfoSection from "../components/TournamentDetails/TournamentInfoSection";
-import TournamentSidebarSection from "../components/TournamentDetails/TournamentSidebarSection";
-import TournamentActionsSection from "../components/TournamentDetails/TournamentActionsSection";
+import TournamentBracket from "../components/TournamentDetails/TournamentBracket";
 
 const TournamentDetailsPage = () => {
   const { user, setUser } = useAuth() || {};
-  const { contextTournament, setContextTournament } = useTournament() || {};
-  const { tournamentSlug, entryFee } = useParams();
+  const { contextRoom, setcontextRoom } = useRoom() || {};
+  const { gameSlug, entryFee } = useParams();
   const navigate = useNavigate();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const tournament = {
-    name: tournamentSlug
+  const room = {
+    name: gameSlug
       .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" "),
-    type: tournamentSlug,
+    type: `${gameSlug}`,
     currency: "USDT",
-    entryFeeUSDT: Number(entryFee),
-    participantsRequired: 16,
-    image: `./${tournamentSlug}.png`,
+    entryFeeUSDT: `${entryFee}`,
+    playersPerMatch: 2,
+    currentlyOnline: 42,
+    image: `/${gameSlug}.png`,
   };
 
   const handleBack = () => {
     navigate(-1);
   };
 
-  const handleJoinTournament = () => {
+  const handlePlay = () => {
     setShowConfirmModal(true);
   };
 
-  const cancelJoin = () => {
+  const cancelPlay = () => {
     setShowConfirmModal(false);
   };
 
-  const confirmJoin = useCallback(async () => {
+  const confirmPlay = useCallback(async () => {
     if (!user || isProcessing) return;
 
     try {
       setIsProcessing(true);
       setShowConfirmModal(false);
-
       const updatedUser = await updateUser(
         user._id,
-        { status: "competing" },
+        { status: "playing" },
         { new: true }
       );
       setUser(updatedUser);
-
-      if (updatedUser?.status === "competing") {
-        const joined = await joinTournamentOrCreate(user._id, tournamentSlug, tournament.entryFeeUSDT);
-
-        if (joined?.data) {
-          setContextTournament(joined.data);
-
-          if (joined.data.users?.length >= tournament.participantsRequired) {
-            updatedUser.usdtBalance -= tournament.entryFeeUSDT;
+      if (updatedUser?.status === "playing") {
+        const joinedRoom = await joinRoomOrCreate(user._id, gameSlug, room.entryFeeUSDT);
+        if (joinedRoom?.data) {
+          setcontextRoom(joinedRoom.data);
+          if (joinedRoom.data.users && joinedRoom.data.users.length >= 2) {
+            updatedUser.usdtBalance -= room.entryFeeUSDT;
             setUser(updatedUser);
-            navigate(`/tournamentplay/${tournamentSlug}`);
+            navigate(`/play/${gameSlug}`);
           }
         }
       }
     } catch (error) {
-      console.error("Error joining tournament:", error);
+      console.error("Error during game start:", error);
     } finally {
       setIsProcessing(false);
     }
   }, [
     user,
     isProcessing,
-    tournamentSlug,
-    tournament.entryFeeUSDT,
+    room.entryFeeUSDT,
+    gameSlug,
     setUser,
-    setContextTournament,
+    setcontextRoom,
     navigate,
-    tournament.participantsRequired,
   ]);
+
+  // Don't automatically call confirmPlay on mount
+  // This function should only be called when the user confirms the modal
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-6xl">
-      <TournamentHeaderSection
-        tournament={tournament}
+      <GameHeaderSection
+        room={room}
         handleBack={handleBack}
-        handleJoin={handleJoinTournament}
+        handlePlay={handlePlay}
       />
+      <TournamentBracket bracket={[[1,2,3,4,5,6,7,8],[1,4,6,8],[4,6]]} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <TournamentInfoSection tournament={tournament} />
-        <TournamentSidebarSection />
+        <GameInfoSection room={room} />
+
+        <GameSidebarSection />
       </div>
 
-      <TournamentActionsSection
-        handleJoin={handleJoinTournament}
+      <GameActionsSection
+        handlePlay={handlePlay}
         showConfirmModal={showConfirmModal}
-        tournament={tournament}
-        cancelJoin={cancelJoin}
-        confirmJoin={confirmJoin}
+        room={room}
+        cancelPlay={cancelPlay}
+        confirmPlay={confirmPlay}
         isProcessing={isProcessing}
       />
     </div>

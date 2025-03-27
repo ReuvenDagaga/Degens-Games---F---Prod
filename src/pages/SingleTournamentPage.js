@@ -10,8 +10,8 @@ const SingleTournamentPage = () => {
   const tournament = {
     id: 999,
     name: "Chess Monad Tournament",
-    entryFeeUSDT: 10,
-    image: "./ChessMonadT.png", // תמונת הטורניר
+    entryFeeUSDT: 2,
+    image: "./chess-monad-tournament.png", // תמונת הטורניר
     type: "Tournament",
     currency: "USDT"
   };
@@ -55,8 +55,8 @@ const SingleTournamentPage = () => {
       {/* הגדרת האנימציה של הנקודה הירוקה */}
       <style>{pulsingDotAnimation}</style>
 
-      <h2 className="text-2xl font-bold text-gray-100 mb-5 text-center">
-        Upcoming Tournament
+      <h2 className="text-3xl font-bold text-gray-100 mb-5 text-center">
+        Now Live! 🔴 Chess Monad Tournament 🔥
       </h2>
 
       <div 
@@ -72,19 +72,10 @@ const SingleTournamentPage = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent" />
 
-          {/* הצגת מספר השחקנים/משתתפים שמחוברים */}
-          <div className="absolute top-3 right-3 bg-gray-900 bg-opacity-80 px-2 py-1 rounded-md text-sm font-medium flex items-center">
-            <div className="w-2.5 h-2.5 bg-green-500 rounded-full mr-2 pulse-dot"></div>
-            <span className="text-green-400">{tournament.currentlyOnline}</span>
-            <span className="text-gray-300 ml-1">Online</span>
-          </div>
-
-          {/* תג לטורניר */}
           <div className="absolute top-3 left-3 bg-purple-600 px-2 py-1 rounded-md text-sm font-medium">
             {tournament.type}
           </div>
 
-          {/* תג למטבע הכניסה (USDT למשל) */}
           {tournament.currency && (
             <div
               className="absolute top-14 left-3 px-2 py-1 rounded-md text-xs font-medium flex items-center gap-1"
@@ -102,7 +93,7 @@ const SingleTournamentPage = () => {
               {tournament.currency === "USDT" ? (
                 <>
                   <img
-                    src="/USDT.png"
+                    src="./USDT.png"
                     alt="USDT"
                     className="w-4 h-4"
                   />
@@ -111,7 +102,7 @@ const SingleTournamentPage = () => {
               ) : (
                 <>
                   <img
-                    src="/favi.png"
+                    src="./favi.png"
                     alt="ePVP"
                     className="w-4 h-4"
                   />
@@ -132,7 +123,8 @@ const SingleTournamentPage = () => {
                   <Users size={16} className="text-gray-300 mr-1" />
                   <span>
                     {tournament.participantsRequired}{" "}
-                    משתתפים דרושים
+                    <span className="text-gray-400">Participants:  </span>
+                    100 Players
                   </span>
                 </div>
               </div>
@@ -140,14 +132,13 @@ const SingleTournamentPage = () => {
           </div>
         </div>
 
-        {/* גוף הכרטיס - פרטים על הטורניר */}
         <div className="p-4">
           <div className="flex justify-between items-center mb-3">
             <div className="flex items-center">
               {tournament.currency === "USDT" ? (
                 <>
                   <img
-                    src="/USDT.png"
+                    src="./USDT.png"
                     alt="USDT"
                     className="w-5 h-5 mr-1"
                   />
@@ -158,19 +149,15 @@ const SingleTournamentPage = () => {
               ) : (
                 <>
                   <img
-                    src="/favi.png"
+                    src="./favi.png"
                     alt="ePVP"
                     className="w-5 h-5 mr-1"
                   />
                   <span className="font-medium text-yellow-400 text-lg">
-                    {/* אם היית רוצה תשלום ב-ePVP */}
                     כניסה ב-ePVP
                   </span>
                 </>
               )}
-            </div>
-            <div className="text-xs text-gray-400 bg-gray-750 px-2 py-1 rounded">
-              נדרשים {tournament.participantsRequired} שחקנים
             </div>
           </div>
 
@@ -183,11 +170,10 @@ const SingleTournamentPage = () => {
               className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md text-sm transition-colors"
               onClick={handleTournamentClick}
             >
-              Play
+              Join
             </button>
           </div>
 
-          {/* דוגמה לריוורדים (פרסים) בטורניר */}
           <div className="mt-3 pt-3 border-t border-gray-700">
             <div className="bg-gray-750 rounded-md p-2.5 text-xs">
               {tournament.currency === "USDT" ? (
@@ -196,21 +182,21 @@ const SingleTournamentPage = () => {
                     <div className="text-gray-400 mb-1">Win Rewards:</div>
                     <div className="flex items-center">
                       <img
-                        src="/USDT.png"
+                        src="./USDT.png"
                         alt="USDT"
                         className="w-3 h-3 mr-1"
                       />
                       <span className="text-green-400">
-                        +{tournament.entryFeeUSDT * 4} USDT
+                        +{tournament.entryFeeUSDT * 150} USDT
                       </span>
                     </div>
                     <div className="flex items-center mt-1">
                       <img
-                        src="/favi.png"
+                        src="./favi.png"
                         alt="ePVP"
                         className="w-3 h-3 mr-1"
                       />
-                      <span className="text-yellow-400">+500 ePVP</span>
+                      <span className="text-yellow-400">+50000 ePVP</span>
                     </div>
                   </div>
                   <div className="text-right">
@@ -221,7 +207,7 @@ const SingleTournamentPage = () => {
                         alt="ePVP"
                         className="w-3 h-3 mr-1"
                       />
-                      <span className="text-yellow-400">+50 ePVP</span>
+                      <span className="text-yellow-400">+500 ePVP</span>
                     </div>
                   </div>
                 </div>
