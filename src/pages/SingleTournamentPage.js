@@ -9,11 +9,9 @@ const SingleTournamentPage = () => {
   // אובייקט יחיד שמייצג את הטורניר
   const tournament = {
     id: 999,
-    name: "Global Chess Championship",
-    entryFeeUSDT: 100,
-    participantsRequired: 16,      // מספר המשתתפים בטורניר
-    currentlyOnline: 32,           // כמה כבר מחוברים או נרשמו
-    image: "/chess-tournament.png", // תמונת הטורניר
+    name: "Chess Monad Tournament",
+    entryFeeUSDT: 10,
+    image: "./ChessMonadT.png", // תמונת הטורניר
     type: "Tournament",
     currency: "USDT"
   };

@@ -26,7 +26,6 @@ const TournamentDetailsPage = () => {
     currency: "USDT",
     entryFeeUSDT: `${entryFee}`,
     playersPerMatch: 2,
-    currentlyOnline: 42,
     image: `/${gameSlug}.png`,
   };
 
