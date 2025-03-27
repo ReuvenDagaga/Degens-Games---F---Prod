@@ -2,6 +2,7 @@ import React from 'react';
 import AnnouncementsCarousel from '../components/AnnouncementsComponent';
 import RecentGames from '../components/RecentGames';
 import GameRooms from './GameRooms';
+import SingleTournamentPage from './SingleTournamentPage';
 
 
 const HomePage = () => {
@@ -13,6 +14,7 @@ const HomePage = () => {
         
         {/* Open Game Rooms Section */}
         <GameRooms />
+        <SingleTournamentPage/>
         
         {/* Recent Games Section */}
         <RecentGames />
