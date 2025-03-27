@@ -27,7 +27,7 @@ const TournamentDetailsPage = () => {
     currency: "USDT",
     entryFeeUSDT: Number(entryFee),
     participantsRequired: 16,
-    image: `/${tournamentSlug}.png`,
+    image: `./${tournamentSlug}.png`,
   };
 
   const handleBack = () => {
