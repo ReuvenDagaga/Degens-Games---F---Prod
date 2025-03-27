@@ -14,7 +14,7 @@ const TournamentHeaderSection = ({ tournament, handleBack, handleJoin }) => {
 
       <div className="relative rounded-xl overflow-hidden mb-8 h-64 md:h-80">
         <img 
-          src={tournament.image || "/default-tournament.jpg"} 
+          src={tournament.image || "./default-tournament.jpg"} 
           alt={tournament.name}
           className="w-full h-full object-cover"
         />
