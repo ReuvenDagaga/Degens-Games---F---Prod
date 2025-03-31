@@ -9,6 +9,7 @@ import AIPlayerAnalytics from "../pages/AIPlayerAnalytics";
 import ChessPage from "../pages/Games/Chess/ChessPage";
 import Game2048Page from "../pages/Games/2048/2048Page";
 import TournamentDetailsPage from "../pages/TournamentDetailsPage";
+import TermsAndPrivacy from "../pages/TermsAndPrivacy";
 
 export const AppRoutes = () => {
 
@@ -25,6 +26,7 @@ export const AppRoutes = () => {
       <Route path="/play/2048" element={<Game2048Page />}/>
       <Route path="/Statistics" element={<TokenomicsDashboard />} />
       <Route path="/AI" element={<AIPlayerAnalytics />} />
+      <Route path="/TermsAndPrivacy" element={<TermsAndPrivacy />} />
     </Routes>
   );
 };
