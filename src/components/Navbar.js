@@ -47,6 +47,7 @@ const Navbar = () => {
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
+        console.log("Google token response", tokenResponse);
         await loginWithGoogle(tokenResponse.credential);
       } catch (err) {
         console.error("Google login failed", err);
