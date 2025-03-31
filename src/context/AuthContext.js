@@ -156,6 +156,8 @@ export const AuthProvider = ({ children }) => {
     setError(null);
 
     try {
+      console.log("Google token:", googleToken);
+      
       const response = await axios.post(
         `${BASE_URL}/api/login`,
         { googleToken },
