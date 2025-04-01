@@ -10,6 +10,7 @@ import ChessPage from "../pages/Games/Chess/ChessPage";
 import Game2048Page from "../pages/Games/2048/2048Page";
 import TournamentDetailsPage from "../pages/TournamentDetailsPage";
 import TermsAndPrivacy from "../pages/TermsAndPrivacy";
+import ZipPage from "../pages/Games/ZIP/ZipPage";
 
 export const AppRoutes = () => {
 
@@ -24,6 +25,7 @@ export const AppRoutes = () => {
       <Route path="/TournamentDetails/:gameSlug/:entryFee" element={<TournamentDetailsPage />} />
       <Route path="/play/Chess" element={<ChessPage />}/>
       <Route path="/play/2048" element={<Game2048Page />}/>
+      <Route path="/play/zip" element={<ZipPage />}/>
       <Route path="/Statistics" element={<TokenomicsDashboard />} />
       <Route path="/AI" element={<AIPlayerAnalytics />} />
       <Route path="/TermsAndPrivacy" element={<TermsAndPrivacy />} />

@@ -48,7 +48,17 @@ const gameRooms = [
     type: "Conquest",
     currency: "USDT"
   },
-
+  {
+    id: 106,
+    name: "Zip",
+    entryFeeUSDT: 5,
+    entryFeeEPVP: null,
+    playersPerMatch: 2,
+    currentlyOnline: 2, 
+    image: "/ZIP.png",
+    type: "ACC",
+    currency: "USDT"
+  },
 ];
 
 // Animation for pulsing green dot
