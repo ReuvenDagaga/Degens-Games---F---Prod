@@ -113,8 +113,8 @@ const AIPlayerAnalytics = () => {
     return (
       <div className="p-8 text-center text-gray-400">
         <h1 className="text-2xl font-bold text-white mb-4">AI Player Analytics</h1>
-        <p>ברוכים הבאים למערכת ניתוח הביצועים האישית שלך 🎯</p>
-        <p className="mt-2">אנא שחק בכמה משחקים כדי שנוכל להציג לך ניתוחים מותאמים אישית.</p>
+        <p>This dashboard will show AI-driven analysis once you have gameplay history.</p>
+        <p className="mt-2">Play a few games to activate insights.</p>
       </div>
     );
   }
@@ -228,7 +228,7 @@ const AIPlayerAnalytics = () => {
             </ResponsiveContainer>
           </div>
         ) : (
-          <p className="text-gray-400 text-sm">שחק במספר משחקים כדי שנוכל להציג מגמות שיפור לאורך זמן.</p>
+          <p className="text-gray-400 text-sm"></p>
         )}
       </div>
 
