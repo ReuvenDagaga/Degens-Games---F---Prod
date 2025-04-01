@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import {
-  Brain, Award, TrendingUp, BarChart3, Users, Zap, GameController, ArrowUpCircle, ArrowDownCircle, Clock, Target, Bot, User, Activity, ThumbsUp, ThumbsDown
+  Brain, TrendingUp, Target, Bot, User, ThumbsUp, ThumbsDown
 } from 'lucide-react';
 import {
   LineChart, Line, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
+import { useAuth } from '../context/AuthContext';
 
 const getWinRate = (wins, losses) => {
   const total = wins + losses;
