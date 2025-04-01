@@ -13,7 +13,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleNavigation = (path: string) => {
+  const handleNavigation = (path) => {
     navigate(`/${path}`);
     setShowProfileMenu(false);
   };
@@ -26,7 +26,7 @@ const Navbar = () => {
     }
   };
 
-  const formatBalance = (balance: number | undefined) => {
+  const formatBalance = (balance) => {
     if (!balance) return "0";
     if (balance >= 1_000_000_000) return `${(balance / 1_000_000_000).toFixed(2)}B`;
     if (balance >= 1_000_000) return `${(balance / 1_000_000).toFixed(2)}M`;
@@ -34,11 +34,11 @@ const Navbar = () => {
     return balance.toFixed(2);
   };
 
-  const isActive = (path: string) => location.pathname === `/${path}`;
+  const isActive = (path) => location.pathname === `/${path}`;
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (profileMenuRef.current && !(profileMenuRef.current as any).contains(event.target)) {
+    const handleClickOutside = (event) => {
+      if (profileMenuRef.current && !(profileMenuRef.current).contains(event.target)) {
         setShowProfileMenu(false);
       }
     };
