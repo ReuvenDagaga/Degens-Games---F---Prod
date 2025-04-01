@@ -45,8 +45,8 @@ const recommendTrainings = (user) => {
     isFree: true,
     weakness: weaknessDetected && game.type !== "Chess",
     aiNotes: weaknessDetected
-      ? `מומלץ לעבוד על ${game.skill} שלך במשחק מסוג ${game.type}`
-      : `הביצועים שלך במשחק ${game.type} טובים מאוד! המשך כך.`
+      ? `We recommend improving your ${game.skill.toLowerCase()} in ${game.type}.`
+      : `Your performance in ${game.type} is strong. Keep it up!`
   }));
 };
 
