@@ -8,7 +8,6 @@ const WeeklyLeaderboard = () => {
   const [timeRemaining, setTimeRemaining] = useState('');
   const [loading, setLoading] = useState(true);
   
-  // פונקציה שתחשב את הזמן שנותר עד לריסט הטבלה השבועית (יום ראשון בשעה 2 בלילה שעון ארה"ב)
   const calculateTimeRemaining = () => {
     const now = new Date();
     const resetTime = new Date();
@@ -113,7 +112,6 @@ const WeeklyLeaderboard = () => {
       };
     } else {
       return {
-        usdtAmount: 'Raffle for 1000',
         epvpAmount: 10000,
         type: 'raffle'
       };
@@ -150,7 +148,7 @@ const WeeklyLeaderboard = () => {
       
       {/* Prize information */}
       <div className="bg-gray-800 p-4 border-b border-gray-700">
-        <div className="flex flex-wrap gap-4">
+        <div className="flex justify-between flex-wrap gap-4">
           <div className="flex items-center bg-gray-750 rounded-md px-3 py-2 border border-gray-700">
             <div className="w-8 h-8 rounded-full bg-yellow-900 flex items-center justify-center mr-2">
               <Trophy size={16} className="text-yellow-400" />
@@ -196,19 +194,7 @@ const WeeklyLeaderboard = () => {
             </div>
           </div>
           
-          <div className="flex items-center bg-gray-750 rounded-md px-3 py-2 border border-gray-700">
-            <div className="w-8 h-8 rounded-full bg-purple-900 flex items-center justify-center mr-2">
-              <Gift size={16} className="text-purple-400" />
-            </div>
-            <div>
-              <div className="text-xs text-gray-400">All Others</div>
-              <div className="text-sm font-semibold text-white">
-                <span className="text-purple-400">Raffle for $1000 USDT</span>
-                <span className="text-yellow-400 text-xs">+10000 ePVP</span>
-              </div>
-            </div>
-          </div>
-        </div>
+         </div>
       </div>
         
       {/* User's rank */}
