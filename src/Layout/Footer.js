@@ -9,7 +9,7 @@ const Footer = () => {
           &copy; {new Date().getFullYear()} Degen Games. All rights reserved.
           <br />
           <span className="text-gray-500 cursor-pointer hover:text-gray-300">
-            Terms of Use & Privacy Policy{" "}
+            Terms of Use & Privacy Policy{" - "}
           </span>
           <span className="text-center text-gray-600 text-xs">
             Experimental Platform - Use at Your Own Risk

@@ -6,6 +6,7 @@ import {
   LineChart, Line, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import { useAuth } from '../context/AuthContext';
+import Loading from '../components/Loading';
 
 const getWinRate = (wins, losses) => {
   const total = wins + losses;
@@ -111,11 +112,9 @@ const AIPlayerAnalytics = () => {
 
   if (!user || !data) {
     return (
-      <div className="p-8 text-center text-gray-400">
-        <h1 className="text-2xl font-bold text-white mb-4">AI Player Analytics</h1>
-        <p>This dashboard will show AI-driven analysis once you have gameplay history.</p>
-        <p className="mt-2">Play a few games to activate insights.</p>
-      </div>
+      <div className="flex justify-center items-center h-97 bg-gray-900">
+      <Loading/>
+    </div>
     );
   }
 
