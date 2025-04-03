@@ -1,4 +1,4 @@
-// ===== frontend/components/Navbar.tsx =====
+// ===== frontend/components/Navbar.js =====
 import React, { useState, useEffect, useRef } from "react";
 import {
   Wallet,
@@ -61,14 +61,15 @@ const Navbar = () => {
   }, []);
 
   const navItems = [
-    { label: "Leaderboard", icon: <Trophy size={18} />, path: "leaderboard" },
-    { label: "Staking", icon: <TrendingUp size={18} />, path: "staking" },
-    { label: "Statistics", icon: <BarChart size={18} />, path: "statistics" },
-    { label: "AI", icon: <Star size={18} />, path: "ai" },
+    { label: "Leaderboard", icon: <Trophy size={16} />, path: "leaderboard" },
+    { label: "Staking", icon: <TrendingUp size={16} />, path: "staking" },
+    { label: "Statistics", icon: <BarChart size={16} />, path: "statistics" },
+    { label: "AI", icon: <Star size={16} />, path: "ai" },
   ];
 
   return (
     <nav className="bg-gray-900 text-white px-4 py-3 flex justify-between items-center border-b border-gray-700">
+      {/* Logo */}
       <img
         src="/LOGO.png"
         alt="Logo"
@@ -76,15 +77,13 @@ const Navbar = () => {
         onClick={() => navigate("/")}
       />
 
-      {/* Desktop Nav */}
+      {/* Desktop nav buttons */}
       <div className="hidden md:flex space-x-6">
         {navItems.map(({ label, icon, path }) => (
           <button
             key={path}
             className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-all ${
-              isActive(path)
-                ? "text-red-500 bg-gray-800"
-                : "hover:text-red-500"
+              isActive(path) ? "text-red-500 bg-gray-800" : "hover:text-red-500"
             }`}
             onClick={() => handleNavigation(path)}
           >
@@ -94,25 +93,11 @@ const Navbar = () => {
         ))}
       </div>
 
-      {/* Mobile Nav */}
-      <div className="flex md:hidden space-x-2">
-        {navItems.map(({ icon, path }) => (
-          <button
-            key={path}
-            className={`p-2 rounded-md ${
-              isActive(path) ? "bg-red-600" : "bg-gray-800"
-            }`}
-            onClick={() => handleNavigation(path)}
-          >
-            {icon}
-          </button>
-        ))}
-      </div>
-
-      {/* User/Wallet Section */}
+      {/* Right section: user/auth */}
       <div className="relative ml-4">
         {user ? (
           <div className="flex items-center space-x-2 sm:space-x-4">
+            {/* Balances – desktop only */}
             <div className="hidden md:flex items-center bg-gray-800 px-3 py-1.5 rounded-md border border-gray-700">
               <img src="/USDT.png" alt="USDT" className="w-5 h-5 mr-2" />
               <span className="text-green-400 font-medium">
@@ -125,6 +110,8 @@ const Navbar = () => {
                 {formatBalance(user.ePvpBalance)}
               </span>
             </div>
+
+            {/* Profile icon */}
             <div
               className="w-10 h-10 rounded-full bg-gradient-to-r from-red-700 to-red-500 flex items-center justify-center font-bold cursor-pointer"
               onClick={() => setShowProfileMenu(!showProfileMenu)}
@@ -132,11 +119,25 @@ const Navbar = () => {
               {user.username?.slice(0, 2).toUpperCase() || "U"}
             </div>
 
+            {/* Profile Menu */}
             {showProfileMenu && (
               <div
                 ref={profileMenuRef}
                 className="absolute right-0 top-12 w-48 bg-gray-800 border border-gray-700 rounded-md shadow-lg py-2 z-50"
               >
+                {/* Nav links for small screen */}
+                <div className="md:hidden">
+                  {navItems.map(({ label, icon, path }) => (
+                    <button
+                      key={path}
+                      onClick={() => handleNavigation(path)}
+                      className="flex items-center px-4 py-2 text-white hover:bg-gray-700 w-full text-left"
+                    >
+                      {icon}
+                      <span className="ml-2">{label}</span>
+                    </button>
+                  ))}
+                </div>
                 <button
                   onClick={() => handleNavigation("profile")}
                   className="flex items-center px-4 py-2 text-white hover:bg-gray-700 w-full text-left"
@@ -154,16 +155,17 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="flex items-center space-x-2">
-            {/* Desktop view */}
+            {/* Connect Wallet button */}
             <button
               onClick={handleConnectWallet}
-              className="hidden sm:flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md"
+              className="flex items-center justify-center bg-red-600 hover:bg-red-700 text-white rounded-md p-2 sm:px-4 sm:py-2"
             >
               <Wallet size={20} />
-              <span>Connect Wallet</span>
+              <span className="hidden sm:inline ml-2">Connect Wallet</span>
             </button>
 
-            <div className="hidden sm:block">
+            {/* Google button mimic – same style */}
+            <div className="flex items-center justify-center bg-white text-black rounded-md p-2 sm:px-4 sm:py-2">
               <GoogleLogin
                 onSuccess={({ credential }) => {
                   if (credential) {
@@ -172,27 +174,13 @@ const Navbar = () => {
                   }
                 }}
                 onError={() => console.error("[NAVBAR] Google login failed")}
-              />
-            </div>
-
-            {/* Mobile view - icon only */}
-            <button
-              onClick={handleConnectWallet}
-              className="sm:hidden p-2 rounded-md bg-red-600 hover:bg-red-700"
-            >
-              <Wallet size={20} />
-            </button>
-            <div className="sm:hidden">
-              <GoogleLogin
+                useOneTap={false}
+                theme="outline"
                 shape="circle"
                 size="medium"
-                onSuccess={({ credential }) => {
-                  if (credential) {
-                    console.log("[NAVBAR] Google token received");
-                    loginWithGoogle(credential);
-                  }
-                }}
-                onError={() => console.error("[NAVBAR] Google login failed")}
+                text="signin_with"
+                width="100"
+                logo_alignment="center"
               />
             </div>
           </div>

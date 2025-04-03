@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Updated sample data - System announcements with ePVP references
 const announcements = [
   {
     id: 1,
@@ -29,7 +28,7 @@ const announcements = [
 
 const AnnouncementsCarousel = () => {
   const [currentAnnouncement, setCurrentAnnouncement] = useState(0);
-  const [direction, setDirection] = useState(1); // 1 for right, -1 for left
+  const [direction, setDirection] = useState(1);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   useEffect(() => {
@@ -43,7 +42,6 @@ const AnnouncementsCarousel = () => {
     return () => clearInterval(interval);
   }, [isAutoPlaying]);
 
-  // Pause auto-play when hovering
   const handleMouseEnter = () => setIsAutoPlaying(false);
   const handleMouseLeave = () => setIsAutoPlaying(true);
 
@@ -58,45 +56,57 @@ const AnnouncementsCarousel = () => {
   };
 
   return (
-    <div 
+    <div
       className="bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-700 mb-8"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="relative">
-        {/* Background Image with Animation */}
-        <div className="h-80 bg-gray-700 overflow-hidden relative">
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-80 z-10"></div>
-          
+      <div className="relative flex flex-col-reverse md:flex-col">
+        {/* Text Section */}
+        <div className="p-4 md:p-6 z-20 bg-gray-900/80 md:bg-transparent md:absolute md:bottom-0 md:left-0 md:right-0">
+          <AnimatePresence>
+            <motion.div
+              key={`text-${currentAnnouncement}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+            >
+              <span className="text-xs text-red-400 mb-1 block">
+                {announcements[currentAnnouncement].date}
+              </span>
+              <h2 className="text-xl md:text-3xl font-bold text-white mb-2">
+                {announcements[currentAnnouncement].title}
+              </h2>
+              <p className="text-gray-300 text-sm md:text-base max-w-2xl">
+                {announcements[currentAnnouncement].description}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Image Section with Animation */}
+        <div className="h-60 md:h-80 w-full relative">
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-80 z-10 pointer-events-none" />
           <AnimatePresence initial={false} custom={direction}>
             <motion.div
               key={currentAnnouncement}
               custom={direction}
               variants={{
-                enter: (direction) => ({
-                  x: direction > 0 ? '100%' : '-100%',
+                enter: (dir) => ({
+                  x: dir > 0 ? '100%' : '-100%',
                   opacity: 0,
                   scale: 1.1
                 }),
                 center: {
                   x: 0,
                   opacity: 1,
-                  scale: 1,
-                  transition: {
-                    x: { type: 'spring', stiffness: 300, damping: 30 },
-                    opacity: { duration: 0.3 },
-                    scale: { duration: 0.4 }
-                  }
+                  scale: 1
                 },
-                exit: (direction) => ({
-                  x: direction > 0 ? '-100%' : '100%',
+                exit: (dir) => ({
+                  x: dir > 0 ? '-100%' : '100%',
                   opacity: 0,
-                  scale: 0.9,
-                  transition: {
-                    x: { type: 'spring', stiffness: 300, damping: 30 },
-                    opacity: { duration: 0.3 },
-                    scale: { duration: 0.4 }
-                  }
+                  scale: 0.9
                 })
               }}
               initial="enter"
@@ -104,115 +114,71 @@ const AnnouncementsCarousel = () => {
               exit="exit"
               transition={{
                 x: { type: 'spring', stiffness: 300, damping: 30 },
-                opacity: { duration: 0.3 }
+                opacity: { duration: 0.3 },
+                scale: { duration: 0.4 }
               }}
               className="absolute inset-0"
             >
               <img
-                src={announcements[currentAnnouncement].image || "/default-announcement.jpg"}
+                src={announcements[currentAnnouncement].image}
                 alt={announcements[currentAnnouncement].title}
                 className="w-full h-full object-cover"
               />
             </motion.div>
           </AnimatePresence>
-          
-          {/* Announcement Text with Animation */}
-          <AnimatePresence>
-            <motion.div 
-              key={`text-${currentAnnouncement}`}
-              className="absolute bottom-0 left-0 right-0 p-6 z-20"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <motion.span 
-                className="text-sm text-red-400 mb-1 block"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-              >
-                {announcements[currentAnnouncement].date}
-              </motion.span>
-              <motion.h2 
-                className="text-3xl font-bold text-white mb-2"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-              >
-                {announcements[currentAnnouncement].title}
-              </motion.h2>
-              <motion.p 
-                className="text-gray-200 text-lg max-w-2xl"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-              >
-                {announcements[currentAnnouncement].description}
-              </motion.p>
-            </motion.div>
-          </AnimatePresence>
         </div>
-        
-        {/* Navigation Buttons with Animation */}
-        <motion.div 
-          className="absolute top-1/2 left-4 transform -translate-y-1/2 z-20"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <button 
+
+        {/* Arrows with proper positioning using flex */}
+        <div className="hidden md:flex absolute inset-0 items-center justify-between px-4 z-30">
+          <motion.button
             onClick={prevAnnouncement}
-            className="bg-gray-900 bg-opacity-70 hover:bg-opacity-90 hover:bg-red-900 text-white p-3 rounded-full transition-colors duration-300 shadow-lg"
+            className="bg-gray-900 bg-opacity-70 hover:bg-opacity-90 hover:bg-red-900 text-white p-3 rounded-full shadow-md transition"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
             <ChevronLeft size={24} />
-          </button>
-        </motion.div>
-        <motion.div 
-          className="absolute top-1/2 right-4 transform -translate-y-1/2 z-20"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <button 
+          </motion.button>
+
+          <motion.button
             onClick={nextAnnouncement}
-            className="bg-gray-900 bg-opacity-70 hover:bg-opacity-90 hover:bg-red-900 text-white p-3 rounded-full transition-colors duration-300 shadow-lg"
+            className="bg-gray-900 bg-opacity-70 hover:bg-opacity-90 hover:bg-red-900 text-white p-3 rounded-full shadow-md transition"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
             <ChevronRight size={24} />
-          </button>
-        </motion.div>
-        
-        {/* Navigation Dots with Animation */}
-        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
+          </motion.button>
+        </div>
+
+        {/* Dots */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-30">
           {announcements.map((_, index) => (
             <motion.button
               key={index}
-              className={`h-3 rounded-full shadow-md transition-all duration-300 ${
-                index === currentAnnouncement 
-                  ? 'bg-red-500 w-8' 
+              className={`h-3 rounded-full transition-all duration-300 ${
+                index === currentAnnouncement
+                  ? 'bg-red-500 w-6'
                   : 'bg-gray-400 w-3 hover:bg-gray-300'
               }`}
               onClick={() => {
                 setDirection(index > currentAnnouncement ? 1 : -1);
                 setCurrentAnnouncement(index);
               }}
-              whileHover={{ scale: 1.2 }}
+              whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-            </motion.button>
+            />
           ))}
         </div>
-        
+
         {/* Auto-play indicator */}
-        <motion.div 
-          className="absolute top-4 right-4 z-20 bg-gray-900 bg-opacity-70 px-2 py-1 rounded-md text-xs text-gray-300"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isAutoPlaying ? 0.8 : 0 }}
-          exit={{ opacity: 0 }}
-        >
-          Auto-playing
-        </motion.div>
+        {isAutoPlaying && (
+          <motion.div
+            className="absolute top-4 right-4 z-30 bg-gray-900 bg-opacity-70 px-2 py-1 rounded-md text-xs text-gray-300"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.9 }}
+            exit={{ opacity: 0 }}
+          >
+          </motion.div>
+        )}
       </div>
     </div>
   );
